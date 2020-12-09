@@ -233,11 +233,11 @@ function moveToPbHome(creepList,type){
  * @param {creep} creep 
  */
 function harvestDeposit(creep){
+    var deposit = Game.getObjectById(creep.memory.id);
     var target = getDepositByMemory(creep.memory.id);
     if(creep.store.getFreeCapacity() > 10 ) {
         if(target){
-            var deposit = Game.getObjectById(creep.memory.id);
-            if(creep.harvest(deposit) == ERR_NOT_IN_RANGE) {
+            if(creep.harvest(deposit) == ERR_NOT_IN_RANGE && target.lastCooldown < 100) {
                 creep.moveTo(target.x, target.y, { reusePath: 50 });
             }
         }else{
@@ -250,7 +250,7 @@ function harvestDeposit(creep){
         var creeps =  _.filter(Game.creeps, (x) => x.memory.role == 'carry' && x.memory.target == 'deposit' && x.memory.room ==  creep.room.visual.roomName && x.memory.id == creep.memory.id);
         if(creeps.length >0 && roomCreeps.length > 0){
             if(creeps[0].store.getFreeCapacity() > 0){
-                if(creep.transfer(creeps[0], target[0].depositType) == ERR_NOT_IN_RANGE) {
+                if(creep.transfer(creeps[0], deposit.depositType) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(creeps[0], { reusePath: 50 });
                 }
             }
@@ -573,7 +573,7 @@ function observerDepositTask(room){
                     if(target.id == scoopDepositList[j].id){
                         scoopDepositList[j].ticksToDecay = target.ticksToDecay;
                         scoopDepositList[j].lastCooldown = target.lastCooldown;
-                        Memory.reomteSource.scoopDeposit[i] = scoopDepositList[j];
+                        Memory.reomteSource.scoopDeposit[j] = scoopDepositList[j];
                     }
                 }
             }   
