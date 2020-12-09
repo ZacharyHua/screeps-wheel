@@ -236,7 +236,10 @@ function harvestDeposit(creep){
     var target = getDepositByMemory(creep.memory.id);
     if(creep.store.getFreeCapacity() > 10 ) {
         if(target){
-            creep.moveTo(target.x, target.y, { reusePath: 50 });
+            var deposit = Game.getObjectById(creep.memory.id);
+            if(creep.harvest(deposit) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target.x, target.y, { reusePath: 50 });
+            }
         }else{
             if(creep.room.visual.roomName == creep.name.substring(0,6)){
                 deleteTask1(creep.name.substring(0,6));
