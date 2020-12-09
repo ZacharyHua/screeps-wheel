@@ -264,7 +264,7 @@ function harvestDeposit(creep){
  */
 function carryDeposit(creep){
     const remoteRoome = creep.name.substring(0,6);
-    if(creep.room.visual.roomName != remoteRoome ){
+    if(creep.store.getUsedCapacity() == 0 && creep.room.visual.roomName != remoteRoome ){
         var status = false;
         for(var i in Memory.reomteSource.scoopDeposit){
             if(Memory.reomteSource.scoopDeposit[i].room == remoteRoome){
